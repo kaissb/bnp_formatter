@@ -54,11 +54,19 @@
             <input type='submit' value='Upload' class="btn btn-primary" onclick="showLoader()">
         </form>
         <div class="loading">
-            <div class="spinner-border" role="status">
-                <span class="sr-only"></span>
+            <div class="row">
+                <div class="col-12">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
             </div>
-            <h4>En attente du téléchargement...</h4>
-            <p>Fermez la fenêtre quand vous terminez.</p>
+            <div class="row">
+                <div class="col-12">
+                    <h4>En attente du téléchargement...</h4>
+                    <small>Ne pas fermer la fenêtre.</small>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"

@@ -1,6 +1,5 @@
 import os
 from fastapi import FastAPI, UploadFile, Request, Response
-from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
@@ -33,7 +32,7 @@ async def process_file(file_path: str):
 
 
 @app.post("/upload")
-async def uploadfile(file: UploadFile):
+async def uploadfile(file: UploadFile, request: Request):
     directory = "/d/bnp_format"
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -41,17 +40,18 @@ async def uploadfile(file: UploadFile):
     with open(file_path, "wb") as f:
         f.write(await file.read())
     output_file_path = await process_file(file_path)
-    return FileResponse(
-        output_file_path,
-        headers={
-            "Content-Disposition": "attachment; filename={0}".format(output_file_path)
-        },
+    if not os.path.exists(output_file_path):
+        return Response(status_code=500, content="Error processing file")
+    return templates.TemplateResponse(
+        "download.html", {"request": request, "file_name": output_file_path}
     )
 
 
 @app.get("/download/{file_name}")
 async def download_file(request: Request, file_name: str):
     file_path = file_name
+    print("paaath")
+    print(file_path)
     return Response(content=open(file_path, "rb").read(), media_type="text/plain")
 
 
